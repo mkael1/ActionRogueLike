@@ -33,7 +33,7 @@ void ASCharacter::BeginPlay()
 void ASCharacter::MoveForward(float Value)
 {
 	FRotator ControlRotation = GetControlRotation();
-	ControlRotation.Pitch = 0; .0f;
+	ControlRotation.Pitch = 0.0f;
 	ControlRotation.Roll = 0.0f;
 
 	AddMovementInput(ControlRotation.Vector(), Value);
@@ -42,14 +42,31 @@ void ASCharacter::MoveForward(float Value)
 void ASCharacter::MoveRight(float Value)
 {
 	FRotator ControlRotation = GetControlRotation();
-	ControlRotation.Pitch = 0; .0f;
+	ControlRotation.Pitch = 0.0f;
 	ControlRotation.Roll = 0.0f;
 
 	FVector RightVector = FRotationMatrix(ControlRotation).GetScaledAxis(EAxis::Y);
 
 
-	AddMovementInput(RightVector
-		, Value);
+	AddMovementInput(RightVector, Value);
+}
+
+void ASCharacter::Jump()
+{
+	ACharacter::Jump();
+}
+
+void ASCharacter::PrimaryAttack()
+{
+
+	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+
+	FTransform SpawnTM = FTransform(GetControlRotation(), HandLocation);
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
 }
 
 // Called every frame
@@ -80,9 +97,14 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	// AXIS IS FROM -1 -> 1 SO A RANGE OF FORCE FOR MOVEMENT EG: CONTROLLER COULD BE 0.5 IF SLIGHTLY PUSHED
 	PlayerInputComponent->BindAxis("MoveForward", this, &ASCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ASCharacter::MoveRight);
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+
+	// ACTIONS IS BOOL 0,1 FOR ACTION BUTTONS
+	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &ASCharacter::PrimaryAttack);
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ASCharacter::Jump);
 }
 
