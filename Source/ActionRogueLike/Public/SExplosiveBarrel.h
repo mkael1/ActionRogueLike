@@ -18,6 +18,11 @@ public:
 	// Sets default values for this actor's properties
 	ASExplosiveBarrel();
 
+	UFUNCTION()
+		void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+	virtual void PostInitializeComponents() override;
+
 protected:
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* StaticMeshComp;
