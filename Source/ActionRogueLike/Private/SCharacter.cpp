@@ -64,23 +64,48 @@ void ASCharacter::PrimaryAttack()
 {
 	PlayAnimMontage(AttackAnim);
 
-
 	GetWorldTimerManager().SetTimer(TimerHandle_PrimaryAttack, this, &ASCharacter::PrimaryAttack_TimeElapsed, 0.2f);
-
-
 }
 
 void ASCharacter::PrimaryAttack_TimeElapsed()
 {
 	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
 
-	FTransform SpawnTM = FTransform(GetControlRotation(), HandLocation);
 
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	SpawnParams.Instigator = this;
 
+	FRotator targetDirection = GetCameraDirection();
+	FTransform SpawnTM = FTransform(targetDirection, HandLocation);
+	
 	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
+}
+
+FRotator ASCharacter::GetCameraDirection()
+{
+		// Get the camera Vector + rotation to shoot a raycast to get the first object it hits
+		FVector LineStart = CameraComp->GetComponentLocation();
+		FRotator CamRot = CameraComp->GetComponentRotation();
+		FVector LineEnd = LineStart + (CamRot.Vector() * 4000.0f);
+		DrawDebugLine(GetWorld(), LineStart, LineEnd, FColor::Red, false, 3.0f, 0, 4.0f);
+
+		// DRAW A LINE TO SHOW THE PROJECTILE DIRECTION
+		FHitResult Hit;
+		GetWorld()->LineTraceSingleByChannel(Hit, LineStart, LineEnd, ECC_Visibility);
+		GetWorld()->LineTraceSingleByChannel(Hit, LineStart, LineEnd, ECC_Visibility);
+
+		// CALCULATE THE REQUIRED ROTATION TO GO FROM VECTOR HANDPOSITION TO VECTOR HIT
+		FVector HandPosition = GetMesh()->GetSocketLocation("Muzzle_01");
+		FRotator newRot;
+		if (Hit.GetActor()) {
+		newRot = (Hit.ImpactPoint - HandPosition).Rotation();
+		}
+		else {
+			newRot = (LineEnd - HandPosition).Rotation();
+		}
+	
+		return newRot;
 }
 
 void ASCharacter::PrimaryInteract()

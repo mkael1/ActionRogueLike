@@ -49,6 +49,7 @@ protected:
 
 	void PrimaryAttack();
 	void PrimaryAttack_TimeElapsed();
+	FRotator GetCameraDirection();
 
 	void PrimaryInteract();
 
