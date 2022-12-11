@@ -28,8 +28,14 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "BlackholeAttack")
 	UAnimMontage* BlackholeAnim;
 
+	UPROPERTY(EditAnywhere, Category = "Teleport")
+		TSubclassOf<AActor> TeleportClass;
+	UPROPERTY(EditAnywhere, Category = "Teleport")
+		UAnimMontage* TeleportAnim;
+
 	FTimerHandle TimerHandle_PrimaryAttack;
 	FTimerHandle TimerHandle_BlackholeAttack;
+	FTimerHandle TimerHandle_Teleport;
 
 
 public:
@@ -58,6 +64,9 @@ protected:
 
 	void BlackholeAttack();
 	void BlackholeAttack_TimeElapsed();
+
+	void Teleport();
+	void Teleport_TimeElapsed();
 
 	FRotator GetCameraDirection();
 

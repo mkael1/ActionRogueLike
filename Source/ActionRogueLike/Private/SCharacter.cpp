@@ -104,6 +104,27 @@ void ASCharacter::BlackholeAttack_TimeElapsed()
 	GetWorld()->SpawnActor<AActor>(BlackholeClass, SpawnTM, SpawnParams);
 }
 
+void ASCharacter::Teleport()
+{
+	PlayAnimMontage(TeleportAnim);
+
+	GetWorldTimerManager().SetTimer(TimerHandle_Teleport, this, &ASCharacter::Teleport_TimeElapsed, 0.15f);
+}
+
+void ASCharacter::Teleport_TimeElapsed()
+{
+	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	SpawnParams.Instigator = this;
+
+	FRotator targetDirection = GetCameraDirection();
+	FTransform SpawnTM = FTransform(targetDirection, HandLocation);
+
+	GetWorld()->SpawnActor<AActor>(TeleportClass, SpawnTM, SpawnParams);
+}
 
 FRotator ASCharacter::GetCameraDirection()
 {
@@ -175,6 +196,7 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	// ACTIONS IS BOOL 0,1 FOR ACTION BUTTONS
 	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &ASCharacter::PrimaryAttack);
 	PlayerInputComponent->BindAction("BlackholeAttack", IE_Pressed, this, &ASCharacter::BlackholeAttack);
+	PlayerInputComponent->BindAction("Teleport", IE_Pressed, this, &ASCharacter::Teleport);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ASCharacter::Jump);
 	PlayerInputComponent->BindAction("PrimaryInteract", IE_Pressed, this, &ASCharacter::PrimaryInteract);
 }

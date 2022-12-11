@@ -6,9 +6,8 @@
 #include "SProjectile.h"
 #include "SProjectileBlackhole.generated.h"
 
-/**
- * 
- */
+class URadialForceComponent;
+
 UCLASS()
 class ACTIONROGUELIKE_API ASProjectileBlackhole : public ASProjectile
 {
@@ -19,6 +18,10 @@ public:
 	ASProjectileBlackhole();
 
 protected:
+	UPROPERTY(VisibleAnywhere);
+	URadialForceComponent* RadialForceComp;
+
+
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
