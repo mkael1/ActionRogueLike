@@ -23,7 +23,13 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Attack")
 	UAnimMontage* AttackAnim;
 
+	UPROPERTY(EditAnywhere, Category = "BlackholeAttack")
+	TSubclassOf<AActor> BlackholeClass;
+	UPROPERTY(EditAnywhere, Category = "BlackholeAttack")
+	UAnimMontage* BlackholeAnim;
+
 	FTimerHandle TimerHandle_PrimaryAttack;
+	FTimerHandle TimerHandle_BlackholeAttack;
 
 
 public:
@@ -49,6 +55,10 @@ protected:
 
 	void PrimaryAttack();
 	void PrimaryAttack_TimeElapsed();
+
+	void BlackholeAttack();
+	void BlackholeAttack_TimeElapsed();
+
 	FRotator GetCameraDirection();
 
 	void PrimaryInteract();

@@ -82,6 +82,29 @@ void ASCharacter::PrimaryAttack_TimeElapsed()
 	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
 }
 
+void ASCharacter::BlackholeAttack()
+{
+	PlayAnimMontage(BlackholeAnim);
+
+	GetWorldTimerManager().SetTimer(TimerHandle_BlackholeAttack, this, &ASCharacter::BlackholeAttack_TimeElapsed, 0.2f);
+}
+
+void ASCharacter::BlackholeAttack_TimeElapsed()
+{
+	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	SpawnParams.Instigator = this;
+
+	FRotator targetDirection = GetCameraDirection();
+	FTransform SpawnTM = FTransform(targetDirection, HandLocation);
+	
+	GetWorld()->SpawnActor<AActor>(BlackholeClass, SpawnTM, SpawnParams);
+}
+
+
 FRotator ASCharacter::GetCameraDirection()
 {
 		// Get the camera Vector + rotation to shoot a raycast to get the first object it hits
@@ -151,6 +174,7 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 	// ACTIONS IS BOOL 0,1 FOR ACTION BUTTONS
 	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &ASCharacter::PrimaryAttack);
+	PlayerInputComponent->BindAction("BlackholeAttack", IE_Pressed, this, &ASCharacter::BlackholeAttack);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ASCharacter::Jump);
 	PlayerInputComponent->BindAction("PrimaryInteract", IE_Pressed, this, &ASCharacter::PrimaryInteract);
 }
