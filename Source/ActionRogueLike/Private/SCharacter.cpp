@@ -69,17 +69,7 @@ void ASCharacter::PrimaryAttack()
 
 void ASCharacter::PrimaryAttack_TimeElapsed()
 {
-	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
-
-
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	SpawnParams.Instigator = this;
-
-	FRotator targetDirection = GetCameraDirection();
-	FTransform SpawnTM = FTransform(targetDirection, HandLocation);
-	
-	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
+	SpawnProjectile(ProjectileClass);
 }
 
 void ASCharacter::BlackholeAttack()
@@ -91,17 +81,7 @@ void ASCharacter::BlackholeAttack()
 
 void ASCharacter::BlackholeAttack_TimeElapsed()
 {
-	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
-
-
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	SpawnParams.Instigator = this;
-
-	FRotator targetDirection = GetCameraDirection();
-	FTransform SpawnTM = FTransform(targetDirection, HandLocation);
-	
-	GetWorld()->SpawnActor<AActor>(BlackholeClass, SpawnTM, SpawnParams);
+	SpawnProjectile(BlackholeClass);
 }
 
 void ASCharacter::Teleport()
@@ -113,17 +93,23 @@ void ASCharacter::Teleport()
 
 void ASCharacter::Teleport_TimeElapsed()
 {
-	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+	SpawnProjectile(TeleportClass);
+}
 
+void ASCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
+{
+	if (ensure(ClassToSpawn)) {
+		FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
 
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	SpawnParams.Instigator = this;
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		SpawnParams.Instigator = this;
 
-	FRotator targetDirection = GetCameraDirection();
-	FTransform SpawnTM = FTransform(targetDirection, HandLocation);
+		FRotator targetDirection = GetCameraDirection();
+		FTransform SpawnTM = FTransform(targetDirection, HandLocation);
 
-	GetWorld()->SpawnActor<AActor>(TeleportClass, SpawnTM, SpawnParams);
+		GetWorld()->SpawnActor<AActor>(ClassToSpawn, SpawnTM, SpawnParams);
+	}
 }
 
 FRotator ASCharacter::GetCameraDirection()

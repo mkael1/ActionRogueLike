@@ -68,6 +68,8 @@ protected:
 	void Teleport();
 	void Teleport_TimeElapsed();
 
+	void SpawnProjectile(TSubclassOf<AActor> ProjectileClass);
+
 	FRotator GetCameraDirection();
 
 	void PrimaryInteract();
