@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "PhysicsEngine/RadialForceComponent.h"
 #include "SProjectileBlackhole.h"
+#include "PhysicsEngine/RadialForceComponent.h"
 
 // Sets default values
 ASProjectileBlackhole::ASProjectileBlackhole()
@@ -11,8 +11,8 @@ ASProjectileBlackhole::ASProjectileBlackhole()
 
 	RadialForceComp = CreateDefaultSubobject<URadialForceComponent>("RadialForceComp");
 	RadialForceComp->SetupAttachment(RootComponent);
-	RadialForceComp->ForceStrength = -2500000.0f;
-	RadialForceComp->Radius = 2000.0f;
+	RadialForceComp->ForceStrength = -2000000.0f;
+	RadialForceComp->Radius = 1500.0f;
 }
 
 // Called when the game starts or when spawned
