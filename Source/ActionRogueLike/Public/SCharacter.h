@@ -9,6 +9,7 @@
 class UCameraComponent;
 class USpringArmComponent;
 class USInteractionComponent;
+class USAttributeComponent;
 class UAnimMontage;
 
 
@@ -49,7 +50,11 @@ protected:
 	UPROPERTY(VisibleAnywhere);
 	UCameraComponent* CameraComp;
 
+	UPROPERTY(VisibleAnywhere);
 	USInteractionComponent* InteractionComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components");
+	USAttributeComponent* AttributeComp;
 
 
 	// Called when the game starts or when spawned
