@@ -30,6 +30,13 @@ ASCharacter::ASCharacter()
 	bUseControllerRotationYaw = false;
 }
 
+void ASCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	AttributeComp->OnHealthChanged.AddDynamic(this, &ASCharacter::OnHealthChanged);
+}
+
 // Called when the game starts or when spawned
 void ASCharacter::BeginPlay()
 {
@@ -127,25 +134,30 @@ FRotator ASCharacter::GetCameraDirection()
 		// DRAW A LINE TO SHOW THE PROJECTILE DIRECTION
 		FHitResult Hit;
 		GetWorld()->LineTraceSingleByChannel(Hit, LineStart, LineEnd, ECC_Visibility);
-		GetWorld()->LineTraceSingleByChannel(Hit, LineStart, LineEnd, ECC_Visibility);
 
 		// CALCULATE THE REQUIRED ROTATION TO GO FROM VECTOR HANDPOSITION TO VECTOR HIT
 		FVector HandPosition = GetMesh()->GetSocketLocation("Muzzle_01");
-		FRotator newRot;
+
 		if (Hit.GetActor()) {
-		newRot = (Hit.ImpactPoint - HandPosition).Rotation();
-		}
-		else {
-			newRot = (LineEnd - HandPosition).Rotation();
+			LineEnd = Hit.ImpactPoint;
 		}
 	
-		return newRot;
+		return (LineEnd - HandPosition).Rotation();
 }
 
 void ASCharacter::PrimaryInteract()
 {
 	if (InteractionComp) {
 		InteractionComp->PrimaryInteract();
+	}
+}
+
+void ASCharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta)
+{
+	if (NewHealth <= 0.0f && Delta < 0.0f)
+	{
+		APlayerController* PC = Cast<APlayerController>(GetController());
+		DisableInput(PC);
 	}
 }
 

@@ -4,6 +4,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/SphereComponent.h"
+#include "Particles/ParticleSystemComponent.h"
 
 ASProjectileTeleport::ASProjectileTeleport()
 {
@@ -24,14 +25,20 @@ void ASProjectileTeleport::Explosion_TimeElapsed()
 {
 	MovementComp->StopMovementImmediately();
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionParticle, this->GetActorLocation());
+
+	EffectComp->DeactivateSystem();
+	SetActorEnableCollision(false);
+
 	GetWorldTimerManager().SetTimer(TimerHandle_Teleport, this, &ASProjectileTeleport::Teleport_Instigator, 0.2f);
 }
 
 void ASProjectileTeleport::Teleport_Instigator()
 {
 	APawn* ProjectileInstigator = GetInstigator();
-	ProjectileInstigator->TeleportTo(this->GetActorLocation(), ProjectileInstigator->GetActorRotation());
-	Destroy();
+	if (ensure(ProjectileInstigator)) {
+		ProjectileInstigator->TeleportTo(this->GetActorLocation(), ProjectileInstigator->GetActorRotation());
+		Destroy();
+	}
 }
 
 void ASProjectileTeleport::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)

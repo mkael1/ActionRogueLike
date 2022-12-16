@@ -79,6 +79,11 @@ protected:
 
 	void PrimaryInteract();
 
+	UFUNCTION()
+	void OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta);
+
+	virtual void PostInitializeComponents();
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
