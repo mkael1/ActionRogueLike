@@ -18,13 +18,12 @@ void ASProjectileTeleport::BeginPlay()
 	Super::BeginPlay();
 
 	GetWorldTimerManager().SetTimer(TimerHandle_Explosion, this, &ASProjectileTeleport::Explosion_TimeElapsed, 0.2f);
-	SphereComp->OnComponentHit.AddDynamic(this, &ASProjectileTeleport::OnHit);
 }
 
 void ASProjectileTeleport::Explosion_TimeElapsed()
 {
 	MovementComp->StopMovementImmediately();
-	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionParticle, this->GetActorLocation());
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactVFX, this->GetActorLocation());
 
 	EffectComp->DeactivateSystem();
 	SetActorEnableCollision(false);
@@ -41,10 +40,10 @@ void ASProjectileTeleport::Teleport_Instigator()
 	}
 }
 
-void ASProjectileTeleport::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+void ASProjectileTeleport::Explode_Implementation()
 {
 	MovementComp->StopMovementImmediately();
-	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionParticle, this->GetActorLocation());
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactVFX, this->GetActorLocation());
 	Teleport_Instigator();
 }
 

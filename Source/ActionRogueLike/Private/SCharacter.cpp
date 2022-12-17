@@ -7,6 +7,7 @@
 #include "GameFrameWork/CharacterMovementComponent.h"
 #include "SInteractionComponent.h"
 #include "SAttributeComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ASCharacter::ASCharacter()
@@ -74,12 +75,12 @@ void ASCharacter::Jump()
 void ASCharacter::PrimaryAttack()
 {
 	PlayAnimMontage(AttackAnim);
-
 	GetWorldTimerManager().SetTimer(TimerHandle_PrimaryAttack, this, &ASCharacter::PrimaryAttack_TimeElapsed, 0.2f);
 }
 
 void ASCharacter::PrimaryAttack_TimeElapsed()
 {
+	UGameplayStatics::SpawnEmitterAttached(ParticleMuzzle, GetMesh(), TEXT("Muzzle_01"), FVector(0, 0, 0), GetMesh()->GetSocketRotation("Muzzle_01"));
 	SpawnProjectile(ProjectileClass);
 }
 
@@ -129,19 +130,26 @@ FRotator ASCharacter::GetCameraDirection()
 		FVector LineStart = CameraComp->GetComponentLocation();
 		FRotator CamRot = CameraComp->GetComponentRotation();
 		FVector LineEnd = LineStart + (CamRot.Vector() * 4000.0f);
-		DrawDebugLine(GetWorld(), LineStart, LineEnd, FColor::Red, false, 3.0f, 0, 4.0f);
 
-		// DRAW A LINE TO SHOW THE PROJECTILE DIRECTION
+		FCollisionObjectQueryParams ObjParams;
+		ObjParams.AddObjectTypesToQuery(ECC_WorldDynamic);
+		ObjParams.AddObjectTypesToQuery(ECC_WorldStatic);
+		ObjParams.AddObjectTypesToQuery(ECC_Pawn);
+		ObjParams.AddObjectTypesToQuery(ECC_PhysicsBody);
+
 		FHitResult Hit;
-		GetWorld()->LineTraceSingleByChannel(Hit, LineStart, LineEnd, ECC_Visibility);
+		// DRAW A LINE TO SHOW THE PROJECTILE DIRECTION
+		GetWorld()->LineTraceSingleByObjectType(Hit, LineStart, LineEnd, ObjParams);
 
 		// CALCULATE THE REQUIRED ROTATION TO GO FROM VECTOR HANDPOSITION TO VECTOR HIT
 		FVector HandPosition = GetMesh()->GetSocketLocation("Muzzle_01");
+
 
 		if (Hit.GetActor()) {
 			LineEnd = Hit.ImpactPoint;
 		}
 	
+		DrawDebugLine(GetWorld(), LineStart, LineEnd, FColor::Red, false, 3.0f, 0, 4.0f);
 		return (LineEnd - HandPosition).Rotation();
 }
 
@@ -154,6 +162,8 @@ void ASCharacter::PrimaryInteract()
 
 void ASCharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta)
 {
+	GetMesh()->SetScalarParameterValueOnMaterials("TimeToHit", GetWorld()->TimeSeconds);
+
 	if (NewHealth <= 0.0f && Delta < 0.0f)
 	{
 		APlayerController* PC = Cast<APlayerController>(GetController());

@@ -10,6 +10,7 @@
 class USphereComponent;
 class UProjectileMovementComponent;
 class UParticleSystemComponent;
+class UAudioComponent;
 
 UCLASS()
 class ACTIONROGUELIKE_API ASProjectile : public AActor
@@ -27,6 +28,21 @@ protected:
 		UProjectileMovementComponent* MovementComp;
 	UPROPERTY(VisibleAnywhere)
 		UParticleSystemComponent* EffectComp;
+	UPROPERTY(VisibleAnywhere)
+		UAudioComponent* AudioComp;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+		UParticleSystem* ImpactVFX;
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+		USoundBase* ImpactSound;
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+		UCameraShakeBase* ImpactShakeEffect;
+
+	UFUNCTION()
+		virtual void OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void Explode();
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

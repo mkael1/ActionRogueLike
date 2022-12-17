@@ -22,15 +22,13 @@ protected:
 	FTimerHandle TimerHandle_Explosion;
 	FTimerHandle TimerHandle_Teleport;
 
-	UPROPERTY(EditAnywhere, Category = "Explosion_Particle")
-	UParticleSystem* ExplosionParticle;
-
 public:
 	ASProjectileTeleport();
 	
 protected:
 	void Explosion_TimeElapsed();
 	void Teleport_Instigator();
-	UFUNCTION()
-		void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+	// Base class using BlueprintNativeEvent, we must override the _Implementation not the Explode()
+	virtual void Explode_Implementation() override;
 };

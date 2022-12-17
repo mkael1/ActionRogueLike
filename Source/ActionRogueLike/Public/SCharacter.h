@@ -11,6 +11,7 @@ class USpringArmComponent;
 class USInteractionComponent;
 class USAttributeComponent;
 class UAnimMontage;
+class UParticleSystem;
 
 
 UCLASS()
@@ -33,6 +34,9 @@ protected:
 		TSubclassOf<AActor> TeleportClass;
 	UPROPERTY(EditAnywhere, Category = "Teleport")
 		UAnimMontage* TeleportAnim;
+
+	UPROPERTY(EditAnywhere, Category = "Attack")
+		UParticleSystem* ParticleMuzzle;
 
 	FTimerHandle TimerHandle_PrimaryAttack;
 	FTimerHandle TimerHandle_BlackholeAttack;
