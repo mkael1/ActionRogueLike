@@ -35,7 +35,7 @@ ASProjectile::ASProjectile()
 
 void ASProjectile::OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	//UGameplayStatics::PlayWorldCameraShake(this, ImpactShakeEffect, Hit.ImpactPoint, 1000.0f, 1000.0f);
+
 	Explode();
 }
 
@@ -45,6 +45,7 @@ void ASProjectile::Explode_Implementation()
 	{
 		UGameplayStatics::SpawnEmitterAtLocation(this, ImpactVFX, GetActorLocation(), GetActorRotation());
 		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), 0.2f);
+		UGameplayStatics::PlayWorldCameraShake(this, ImpactShakeEffect, GetActorLocation(), 2000.0f, 2000.0f);
 
 		EffectComp->DeactivateSystem();
 

@@ -35,8 +35,8 @@ protected:
 		UParticleSystem* ImpactVFX;
 	UPROPERTY(EditDefaultsOnly, Category = "Effects")
 		USoundBase* ImpactSound;
-	UPROPERTY(EditDefaultsOnly, Category = "Effects")
-		UCameraShakeBase* ImpactShakeEffect;
+	UPROPERTY(EditAnywhere, Category = "Effects")
+		TSubclassOf<UCameraShakeBase> ImpactShakeEffect;
 
 	UFUNCTION()
 		virtual void OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
