@@ -149,7 +149,6 @@ FRotator ASCharacter::GetCameraDirection()
 			LineEnd = Hit.ImpactPoint;
 		}
 	
-		DrawDebugLine(GetWorld(), LineStart, LineEnd, FColor::Red, false, 3.0f, 0, 4.0f);
 		return (LineEnd - HandPosition).Rotation();
 }
 
