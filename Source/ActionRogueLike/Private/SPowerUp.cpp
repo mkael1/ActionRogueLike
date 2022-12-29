@@ -21,20 +21,21 @@ ASPowerUp::ASPowerUp()
 
 void ASPowerUp::Interact_Implementation(APawn* InstigatorPawn)
 {
+	// logic in derived classes
 }
 
 void ASPowerUp::EnablePowerUp()
 {
 	IsOnCooldown = false;
 	SphereComp->SetCollisionProfileName("OverlapAllDynamic");
-	MeshComp->SetHiddenInGame(false);
+	RootComponent->SetVisibility(true);
 }
 
 void ASPowerUp::DisablePowerUp()
 {
 	IsOnCooldown = true;
 	SphereComp->SetCollisionProfileName("NoCollision");
-	MeshComp->SetHiddenInGame(true);
+	RootComponent->SetVisibility(false);
 }
 
 // Called when the game starts or when spawned

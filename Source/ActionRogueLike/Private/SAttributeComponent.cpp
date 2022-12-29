@@ -16,14 +16,23 @@ bool USAttributeComponent::IsAlive() const
 	return Health > 0.0f;
 }
 
+bool USAttributeComponent::IsFullHealth() const
+{
+	return MaxHealth == Health;
+}
+
+float USAttributeComponent::GetHealth() const
+{
+	return Health;
+}
+
+float USAttributeComponent::GetHealthMax() const
+{
+	return MaxHealth;
+}
+
 bool USAttributeComponent::ApplyHealthChange(float Delta)
 {
-	// If max health and the delta is positive (healing) no health change
-	if (Health == MaxHealth && Delta >= 0.0f)
-	{
-		return false;
-	}
-
 	Health += Delta;
 
 	Health = FMath::Clamp(Health, 0.0f, MaxHealth);

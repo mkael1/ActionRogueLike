@@ -16,8 +16,13 @@ ASHealthPotionPowerUp::ASHealthPotionPowerUp()
 
 void ASHealthPotionPowerUp::Interact_Implementation(APawn* InstigatorPawn)
 {
+	if (!ensure(InstigatorPawn))
+	{
+		return;
+	}
+
 	USAttributeComponent* AttributeComp = Cast<USAttributeComponent>(InstigatorPawn->GetComponentByClass(USAttributeComponent::StaticClass()));
-	if (ensure(AttributeComp))
+	if (ensure(AttributeComp) && !AttributeComp->IsFullHealth())
 	{
 		if (AttributeComp->ApplyHealthChange(20.0f))
 		{
