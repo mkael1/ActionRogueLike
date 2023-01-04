@@ -23,7 +23,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attributes")
 	float MaxHealth;
-
+		
 public:	
 	UPROPERTY(BlueprintAssignable)
 	FOnHealthChanged OnHealthChanged;
