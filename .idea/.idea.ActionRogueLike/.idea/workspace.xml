@@ -25,6 +25,11 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "rider.code.cleanup.on.save": "true",
+    "rider.code.cleanup.on.save.profile": "Built-in: Reformat & Apply Syntax Style",
+    "settings.editor.selected.configurable": "preferences.sourceCode",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -158,6 +163,9 @@
       <option name="presentableId" value="Default" />
       <updated>1672872635564</updated>
       <workItem from="1672872638892" duration="592000" />
+      <workItem from="1672956014996" duration="1745000" />
+      <workItem from="1672961419189" duration="287000" />
+      <workItem from="1673044389691" duration="6431000" />
     </task>
     <servers />
   </component>
@@ -168,5 +176,9 @@
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

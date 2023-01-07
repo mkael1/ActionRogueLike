@@ -24,7 +24,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	USAttributeComponent* AttributeComp;
-
+	
 	UFUNCTION()
 	void OnPawnSeen(APawn* Pawn);
 

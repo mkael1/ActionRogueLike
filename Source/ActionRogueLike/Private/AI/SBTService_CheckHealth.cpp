@@ -18,7 +18,8 @@ void USBTService_CheckHealth::TickNode(UBehaviorTreeComponent& OwnerComp, uint8*
 		USAttributeComponent* AttributeComp = Cast<USAttributeComponent>(MyPawn->GetComponentByClass(USAttributeComponent::StaticClass()));
 		if (ensure(AttributeComp))
 		{
-			if (AttributeComp->GetHealth() - AttributeComp->GetHealthMax() <= 0.99)
+			FString TheFloatStr = FString::SanitizeFloat(AttributeComp->GetHealth() / AttributeComp->GetHealthMax());
+			if (AttributeComp->GetHealth() / AttributeComp->GetHealthMax() < 0.5)
 			{
 				BlackBoardComp->SetValueAsBool("IsHiding", true);
 			}
