@@ -24,7 +24,6 @@ EBTNodeResult::Type USBTTask_Heal::ExecuteTask(UBehaviorTreeComponent& OwnerComp
 			AttributeComponent->ApplyHealthChange(AttributeComponent->GetHealthMax());
 			UBlackboardComponent* BlackboardComponent =  OwnerComp.GetBlackboardComponent();
 			BlackboardComponent->SetValueAsBool("IsHiding", false);
-			BlackboardComponent->SetValueAsBool("HealOnCooldown", true);
 			return EBTNodeResult::Succeeded;
 		}
 		return EBTNodeResult::Failed;
