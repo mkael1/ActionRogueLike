@@ -33,11 +33,13 @@ float USAttributeComponent::GetHealthMax() const
 
 bool USAttributeComponent::ApplyHealthChange(float Delta)
 {
-	Health += Delta;
+	float OldHealth = Health;
 
-	Health = FMath::Clamp(Health, 0.0f, MaxHealth);
-	UE_LOG(LogTemp, Log, TEXT("NewHealth %f %"), Health / MaxHealth);
-	OnHealthChanged.Broadcast(nullptr, this, Health, Delta);
+	Health = FMath::Clamp(Health + Delta, 0.0f, MaxHealth);
+	UE_LOG(LogTemp, Warning, TEXT("Delta %f"), Delta);
+
+	float ActualDelta = Health - OldHealth;
+	OnHealthChanged.Broadcast(nullptr, this, Health, ActualDelta);
 
 	return true;
 }
